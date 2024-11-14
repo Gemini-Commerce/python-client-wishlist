@@ -18,15 +18,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictStr
-from pydantic import Field
 from wishlist.models.wishlist_sharing_request import WishlistSharingRequest
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
+from typing import Optional, Set
+from typing_extensions import Self
 
 class WishlistBulkCreateSharingRequest(BaseModel):
     """
@@ -34,13 +30,14 @@ class WishlistBulkCreateSharingRequest(BaseModel):
     """ # noqa: E501
     tenant_id: Optional[StrictStr] = Field(default=None, alias="tenantId")
     sharing_requests: Optional[List[WishlistSharingRequest]] = Field(default=None, alias="sharingRequests")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["tenantId", "sharingRequests"]
 
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
 
     def to_str(self) -> str:
@@ -53,7 +50,7 @@ class WishlistBulkCreateSharingRequest(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of WishlistBulkCreateSharingRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
@@ -66,24 +63,33 @@ class WishlistBulkCreateSharingRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
+        excluded_fields: Set[str] = set([
+            "additional_properties",
+        ])
+
         _dict = self.model_dump(
             by_alias=True,
-            exclude={
-            },
+            exclude=excluded_fields,
             exclude_none=True,
         )
         # override the default output from pydantic by calling `to_dict()` of each item in sharing_requests (list)
         _items = []
         if self.sharing_requests:
-            for _item in self.sharing_requests:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_sharing_requests in self.sharing_requests:
+                if _item_sharing_requests:
+                    _items.append(_item_sharing_requests.to_dict())
             _dict['sharingRequests'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict) -> Self:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of WishlistBulkCreateSharingRequest from a dict"""
         if obj is None:
             return None
@@ -93,8 +99,13 @@ class WishlistBulkCreateSharingRequest(BaseModel):
 
         _obj = cls.model_validate({
             "tenantId": obj.get("tenantId"),
-            "sharingRequests": [WishlistSharingRequest.from_dict(_item) for _item in obj.get("sharingRequests")] if obj.get("sharingRequests") is not None else None
+            "sharingRequests": [WishlistSharingRequest.from_dict(_item) for _item in obj["sharingRequests"]] if obj.get("sharingRequests") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

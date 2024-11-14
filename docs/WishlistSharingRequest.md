@@ -7,7 +7,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **wishlist_id**| **str** |   | [optional]
-**permission**| [**WishlistPermission**](WishlistPermission.md) |  for more information please, see Model/WishlistPermission.php  | [optional]
+**permission**| [**WishlistPermission**](WishlistPermission.md) |  for more information please, see Model/WishlistPermission.php  | [optional] [default to WishlistPermission.UNKNOWN_PERMISSION]
 **customer_grn**| **str** |   | [optional]
 **customer_aggregation_id**| **str** |   | [optional]
 

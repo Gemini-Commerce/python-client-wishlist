@@ -7,7 +7,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **tenant_id**| **str** |   |
-**privacy**| [**WishlistPrivacy**](WishlistPrivacy.md) |  for more information please, see Model/WishlistPrivacy.php  |
+**privacy**| [**WishlistPrivacy**](WishlistPrivacy.md) |  for more information please, see Model/WishlistPrivacy.php  | [default to WishlistPrivacy.UNKNOWN]
 **label**| [**WishlistLocalizedText**](WishlistLocalizedText.md) |   | [optional]
 **description**| [**WishlistLocalizedText**](WishlistLocalizedText.md) |   | [optional]
 **customer_grn**| **str** | If the customer GRN is set on JWT, it will be used as default. Otherwise, it will be used the customer_grn field.  | [optional]

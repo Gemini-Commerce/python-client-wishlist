@@ -15,7 +15,7 @@
 """  # noqa: E501
 
 
-__version__ = "1.0.0"
+__version__ = "1.3.0"
 
 # import apis into sdk package
 from wishlist.api.wishlist_api import WishlistApi
